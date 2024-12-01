@@ -10,6 +10,6 @@ namespace BookManagement.Application.InterFace
     public interface IUserRepository
     {
         Task AddUserAsync(Users user);
-        Task<bool> ValidateUserAsync(string username, string password);
+        Task<Users?> GetUserByCredentialsAsync(string username, string password);
     }
 }

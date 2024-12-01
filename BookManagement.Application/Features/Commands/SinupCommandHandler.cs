@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookManagement.Domain.Enitiy;
+
 using MediatR;
 using BookManagement.Application.InterFace;
 using BookManagement.Application.Features.Command;
+using static BookManagement.Domain.Enum.Enums;
 
 
 namespace BookManagement.Application.Features.Commands
@@ -27,7 +29,11 @@ namespace BookManagement.Application.Features.Commands
         public async Task<int> Handle(SingupCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<Users>(request);
-            await _userRepository.AddUserAsync(user);
+
+           
+            user.MemberShipType = MemberShipType.Admin;
+
+            await _userRepository.AddUserAsync(user); 
             return user.Id;
         }
     }

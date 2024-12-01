@@ -1,8 +1,11 @@
 ﻿using BookManagement.Application.Features.Command;
 using BookManagement.Application.Features.Commands;
+using BookManagement.Application.Features.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookManagement.Controllers
 {
@@ -22,6 +25,26 @@ namespace BookManagement.Controllers
         {
             var userId = await _mediator.Send(command);
             return Ok(new { UserId = userId });
+        }
+
+        [HttpPost("Signin")]
+        public async Task<IActionResult> Login(SingInQuery query)
+        {
+            var token = await _mediator.Send(query);
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+            return Ok(new { Token = token });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-only-endpoint")]
+        public IActionResult GetAdminData()
+        {
+            return Ok("This is admin-only data.");
         }
 
     }

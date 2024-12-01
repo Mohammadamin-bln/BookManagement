@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookManagement.Application.Features.Command;
 using BookManagement.Domain.Enitiy;
+using static BookManagement.Domain.Enum.Enums;
 
 namespace BookManagement.Application.Mapping.SingupMapping
 {
@@ -13,7 +14,9 @@ namespace BookManagement.Application.Mapping.SingupMapping
     {
         public SingUpMapping()
         {
-            CreateMap<SingupCommand, Users>();
+            CreateMap<SingupCommand, Users>()
+                .ForMember(dest => dest.MemberShipType, opt => opt.MapFrom(src => MemberShipType.Admin));
+
         }
     }
 }

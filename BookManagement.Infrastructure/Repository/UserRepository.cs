@@ -25,9 +25,10 @@ namespace BookManagement.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ValidateUserAsync(string username, string password)
+        public async Task<Users?> GetUserByCredentialsAsync(string username, string password)
         {
-            return await _context.Users.AnyAsync(u=> u.Username == username && u.Password == password);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
         }
 
 
