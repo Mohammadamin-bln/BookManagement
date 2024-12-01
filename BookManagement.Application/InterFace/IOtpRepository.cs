@@ -7,9 +7,9 @@ using BookManagement.Domain.Enitiy;
 
 namespace BookManagement.Application.InterFace
 {
-    public interface IUserRepository
+    public interface IOtpRepository
     {
-        Task AddUserAsync(Users user);
-        Task<Users?> UserLoginAsync(string username, string password);
+        Task SaveOtpForUserAsync(int userId, string otp, DateTime expiryTime);
+        Task<bool> ValidateOtpForUserAsync(int userId, string otp);
     }
 }

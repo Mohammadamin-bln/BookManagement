@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookManagement.Application.Responses;
 using MediatR;
 
 namespace BookManagement.Application.Features.Command
 {
-    public class SingupCommand : IRequest<int>
+    public class SingupCommand : IRequest<SignUpResponse>
     {
         public required string Username { get; set; }
         public required string Password { get; set; }

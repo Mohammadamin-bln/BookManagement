@@ -1,4 +1,5 @@
 ﻿using BookManagement.Application.InterFace;
+using BookManagement.Domain.Enitiy;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,41 +18,50 @@ namespace BookManagement.Application.Features.Queries
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
 
-        public SignInQueryHandler(IUserRepository userRepository, IConfiguration configuration)
+        private readonly IOtpRepository _otpRepository;
+
+        public SignInQueryHandler(IUserRepository userRepository, IConfiguration configuration, IOtpRepository otpRepository)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+
+            _otpRepository = otpRepository;
+
         }
 
         public async Task<string> Handle(SingInQuery request, CancellationToken cancellationToken)
         {
-            // Validate user credentials
-            var user = await _userRepository.GetUserByCredentialsAsync(request.Username, request.Password);
+            // Step 1: Validate user credentials (username and password)
+            var user = await _userRepository.UserLoginAsync(request.Username, request.Password);
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("Invalid credentials.");
             }
 
-            // Get JWT settings from configuration
-            var jwtSettings = _configuration.GetSection("Jwt");
-            var secretKey = jwtSettings["SecretKey"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
+            // Step 2: Validate OTP
+            var isOtpValid = await _otpRepository.ValidateOtpForUserAsync(user.Id, request.Otp);
 
-            if (string.IsNullOrEmpty(secretKey))
+            if (!isOtpValid)
             {
-                throw new ArgumentNullException("SecretKey", "JWT Secret Key is missing in configuration.");
+                throw new UnauthorizedAccessException("Invalid OTP or OTP has expired.");
             }
 
-            // Generate JWT token
+            // Step 3: Generate JWT token
+            var jwtToken = GenerateJwtToken(user.Username, user);
+
+            // Return the JWT token
+            return jwtToken;
+        }
+
+        private string GenerateJwtToken(string username, Users user)
+        {
             var claims = new[]
             {
-        new Claim(JwtRegisteredClaimNames.Sub, request.Username),
-        
-        new Claim(ClaimTypes.Role, user.MemberShipType.ToString()),
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-    };
+                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(ClaimTypes.Role, user.MemberShipType.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -64,8 +74,7 @@ namespace BookManagement.Application.Features.Queries
                 signingCredentials: creds
             );
 
-            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwtToken;  
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }

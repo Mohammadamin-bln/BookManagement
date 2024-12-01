@@ -10,31 +10,54 @@ using MediatR;
 using BookManagement.Application.InterFace;
 using BookManagement.Application.Features.Command;
 using static BookManagement.Domain.Enum.Enums;
+using BookManagement.Application.Responses;
 
 
 namespace BookManagement.Application.Features.Commands
 {
-    public class SignUpCommandHandler : IRequestHandler<SingupCommand, int>
+    public class SignUpCommandHandler : IRequestHandler<SingupCommand, SignUpResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public SignUpCommandHandler(IUserRepository userRepository, IMapper mapper)
+        private readonly IOtpRepository _otpRepository;
+
+        public SignUpCommandHandler(IUserRepository userRepository, IMapper mapper,  IOtpRepository otpRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
 
+            _otpRepository = otpRepository;
+
         }
 
-        public async Task<int> Handle(SingupCommand request, CancellationToken cancellationToken)
+        public async Task<SignUpResponse> Handle(SingupCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<Users>(request);
 
            
-            user.MemberShipType = MemberShipType.Admin;
+            user.MemberShipType = MemberShipType.Normal;
 
-            await _userRepository.AddUserAsync(user); 
-            return user.Id;
+            await _userRepository.AddUserAsync(user);
+
+            var otp = GenerateOtp();
+
+            await _otpRepository.SaveOtpForUserAsync(user.Id, otp, DateTime.UtcNow.AddMinutes(2));
+            return new SignUpResponse
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Otp = otp,
+                ExpiryTime = DateTime.UtcNow.AddMinutes(2) // Expiration time of OTP
+            };
         }
+        private string GenerateOtp()
+        {
+
+            var otp = new Random().Next(100000, 999999).ToString();
+            return otp;
+        }
+
+
     }
 }

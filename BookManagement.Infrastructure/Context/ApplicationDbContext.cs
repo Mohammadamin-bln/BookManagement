@@ -14,7 +14,10 @@ namespace BookManagement.Infrastructure.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
+
         }
         public DbSet<Users> Users { get; set; }
+
+        public DbSet<StoredOtp> StoredOtps { get; set; }
     }
 }

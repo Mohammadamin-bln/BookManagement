@@ -4,8 +4,12 @@ using System.Text;
 using BookManagement.Application.Features.Commands;
 using BookManagement.Application.InterFace;
 using BookManagement.Application.Mapping.SingupMapping;
+
+using BookManagement.Application.Validators;
 using BookManagement.Infrastructure.Context;
 using BookManagement.Infrastructure.Repository;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,10 +17,13 @@ using Microsoft.OpenApi.Models;
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAutoMapper(typeof(SingUpMapping));
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<SingupCommandValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -49,6 +56,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOtpRepository,OtpRepository>();
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SignUpCommandHandler>());
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
