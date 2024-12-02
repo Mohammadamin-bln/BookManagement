@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookManagement.Domain\BookManagement.Domain.csproj" />
+    <ProjectReference Include="..\BookManagement.Infrastructure\BookManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

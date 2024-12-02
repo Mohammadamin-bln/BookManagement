@@ -1,59 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using BookManagement.Domain.Enitiy;
+﻿using BookManagement.Domain.Enitiy;
 
 using MediatR;
-using BookManagement.Application.InterFace;
 using BookManagement.Application.Features.Command;
-using static BookManagement.Domain.Enum.Enums;
 using BookManagement.Application.Responses;
+using BookManagement.Application.Services.Interfaces;
 
 
 namespace BookManagement.Application.Features.Commands
 {
-    public class SignUpCommandHandler : IRequestHandler<SingupCommand, SignUpResponse>
+    public class SignUpCommandHandler(IUserService service,IOtpService otpService) : IRequestHandler<SingupCommand, SignUpResponse>
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
-
-        private readonly IOtpRepository _otpRepository;
-
-        public SignUpCommandHandler(IUserRepository userRepository, IMapper mapper,  IOtpRepository otpRepository)
-        {
-            _userRepository = userRepository;
-            _mapper = mapper;
-
-            _otpRepository = otpRepository;
-
-        }
+        private readonly IUserService _service = service;
+        private readonly IOtpService _otpService = otpService;
 
         public async Task<SignUpResponse> Handle(SingupCommand request, CancellationToken cancellationToken)
         {
-            var user = _mapper.Map<Users>(request);
-
-           
-            user.MemberShipType = MemberShipType.Normal;
-
-            await _userRepository.AddUserAsync(user);
+            Users user = await _service.AddUser(request);
 
             var otp = GenerateOtp();
 
-            await _otpRepository.SaveOtpForUserAsync(user.Id, otp, DateTime.UtcNow.AddMinutes(2));
-            return new SignUpResponse
-            {
-                UserId = user.Id,
-                Username = user.Username,
-                Otp = otp,
-                ExpiryTime = DateTime.UtcNow.AddMinutes(2) // Expiration time of OTP
-            };
+            var result = await _otpService.SaveOtpRequest(user.Id,user.Username, otp);
+            
+            return result;
         }
         private string GenerateOtp()
         {
-
             var otp = new Random().Next(100000, 999999).ToString();
             return otp;
         }

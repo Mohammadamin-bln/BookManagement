@@ -1,13 +1,13 @@
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using BookManagement.Application.Features.Commands;
-using BookManagement.Application.InterFace;
 using BookManagement.Application.Mapping.SingupMapping;
 
 using BookManagement.Application.Validators;
 using BookManagement.Infrastructure.Context;
 using BookManagement.Infrastructure.Repository;
+using BookManagement.Infrastructure.Repository.Implements;
+using BookManagement.Infrastructure.Repository.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +26,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SingupCommandValidator>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

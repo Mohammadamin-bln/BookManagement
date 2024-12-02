@@ -1,38 +1,24 @@
-﻿using BookManagement.Application.InterFace;
-using BookManagement.Domain.Enitiy;
+﻿using BookManagement.Domain.Enitiy;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using BookManagement.Application.Services.Interfaces;
 
 namespace BookManagement.Application.Features.Queries
 {
-    public class SignInQueryHandler : IRequestHandler<SingInQuery, string>
+    public class SignInQueryHandler(IConfiguration configuration, IUserService userService, IOtpService otpService)
+        : IRequestHandler<SingInQuery, string>
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
-
-        private readonly IOtpRepository _otpRepository;
-
-        public SignInQueryHandler(IUserRepository userRepository, IConfiguration configuration, IOtpRepository otpRepository)
-        {
-            _userRepository = userRepository;
-            _configuration = configuration;
-
-            _otpRepository = otpRepository;
-
-        }
+        private readonly IUserService _userService = userService;
+        private readonly IOtpService _otpService = otpService;
 
         public async Task<string> Handle(SingInQuery request, CancellationToken cancellationToken)
         {
             // Step 1: Validate user credentials (username and password)
-            var user = await _userRepository.UserLoginAsync(request.Username, request.Password);
+            var user = await _userService.Login(request.Username,request.Password);
 
             if (user == null)
             {
@@ -40,7 +26,7 @@ namespace BookManagement.Application.Features.Queries
             }
 
             // Step 2: Validate OTP
-            var isOtpValid = await _otpRepository.ValidateOtpForUserAsync(user.Id, request.Otp);
+            var isOtpValid = await _otpService.ValidateOtpRequest(user.Id,request.Otp);
 
             if (!isOtpValid)
             {
@@ -63,12 +49,12 @@ namespace BookManagement.Application.Features.Queries
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: configuration["Jwt:Issuer"],
+                audience: configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
