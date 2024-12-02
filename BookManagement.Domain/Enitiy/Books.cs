@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace BookManagement.Domain.Enitiy
 {
-    public class StoredOtp
+    public class Books
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public string Otp { get; set; }
-        public DateTime ExpiryTime { get; set; }
+        public string Name { get; set; }
+
+        public string Title { get; set; }
+
+        public string Genre { get; set; }
+
+        public int Price { get; set; }
+
     }
 }
-

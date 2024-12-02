@@ -2,7 +2,8 @@ using System.Security.Claims;
 using System.Text;
 using BookManagement.Application.Features.Commands;
 using BookManagement.Application.Mapping.SingupMapping;
-
+using BookManagement.Application.Services.Implements;
+using BookManagement.Application.Services.Interfaces;
 using BookManagement.Application.Validators;
 using BookManagement.Infrastructure.Context;
 using BookManagement.Infrastructure.Repository;
@@ -58,6 +59,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOtpRepository,OtpRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOtpService, OtpService>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SignUpCommandHandler>());
 

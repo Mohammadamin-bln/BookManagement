@@ -19,5 +19,7 @@ namespace BookManagement.Infrastructure.Context
         public DbSet<Users> Users { get; set; }
 
         public DbSet<StoredOtp> StoredOtps { get; set; }
+
+        public DbSet<Books> Books { get; set; }
     }
 }
