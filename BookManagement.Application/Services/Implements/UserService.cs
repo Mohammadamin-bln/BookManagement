@@ -7,17 +7,17 @@ using BookManagement.Infrastructure.Repository.Interfaces;
 
 namespace BookManagement.Application.Services.Implements;
 
-public class UserService(IUserRepository repository) : IUserService
+public class UserService(IUserRepository repository,IMapper mapper) : IUserService
 {
     private readonly IUserRepository _repository = repository;
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<Users> AddUser(SingupCommand request)
     {
         try
         {
             var model = _mapper.Map<Users>(request);
-            model.MemberShipType = Enums.MemberShipType.Normal;
+            model.MemberShipType = Enums.MemberShipType.Admin;
             var added_user = await _repository.AddUser(model);
             return added_user;
         }

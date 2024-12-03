@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookManagement.Application.Features.Commands
 {
-    public class AddBookCommand : IRequest<string>
+    public class AddBookCommand : IRequest<bool>
     {
         public string Name { get; set; }
 

@@ -61,6 +61,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOtpRepository,OtpRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookService, BookService>();
+
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SignUpCommandHandler>());
 

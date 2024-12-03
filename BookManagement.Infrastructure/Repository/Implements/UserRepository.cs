@@ -5,21 +5,25 @@ using BookManagement.Infrastructure.Repository.Interfaces;
 
 namespace BookManagement.Infrastructure.Repository.Implements
 {
-    public class UserRepository(ApplicationDbContext context) : IUserRepository
+    public class UserRepository : IUserRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public UserRepository(ApplicationDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
         public async Task<Users> AddUser(Users user)
         {
-            
-            var addedUser = context.Users.Add(user);
-            await context.SaveChangesAsync();
+            var addedUser = _context.Users.Add(user);
+            await _context.SaveChangesAsync();
             return addedUser.Entity;
         }
 
         public async Task<Users?> Login(string username, string password)
         {
-            var loginResult = await context.Users.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
-
-            return loginResult;
+            return await _context.Users.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
         }
     }
 }

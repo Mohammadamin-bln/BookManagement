@@ -5,24 +5,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookManagement.Infrastructure.Repository
 {
-    public class OtpRepository(ApplicationDbContext context) : IOtpRepository
+    public class OtpRepository : IOtpRepository
     {
-        public async Task SaveOtpRequest(int userId,string otp,DateTime expiry)
+        private readonly ApplicationDbContext _context;
+
+        public OtpRepository(ApplicationDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task SaveOtpRequest(int userId, string otp, DateTime expiry)
         {
             var otpEntity = new StoredOtp
             {
                 UserId = userId,
                 Otp = otp,
-                ExpiryTime = expiry 
+                ExpiryTime = expiry
             };
 
-            context.StoredOtps.Add(otpEntity);
-            await context.SaveChangesAsync();
+            _context.StoredOtps.Add(otpEntity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ValidateOtpRequest(int userId, string otp)
         {
-            var otpEntity = await context.StoredOtps
+            var otpEntity = await _context.StoredOtps
                 .Where(o => o.UserId == userId && o.Otp == otp)
                 .FirstOrDefaultAsync();
 

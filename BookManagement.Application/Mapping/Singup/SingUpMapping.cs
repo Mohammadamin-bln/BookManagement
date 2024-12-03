@@ -15,7 +15,7 @@ namespace BookManagement.Application.Mapping.SingupMapping
         public SingUpMapping()
         {
             CreateMap<SingupCommand, Users>()
-                .ForMember(dest => dest.MemberShipType, opt => opt.MapFrom(src => MemberShipType.Normal));
+                .ForMember(dest => dest.MemberShipType, opt => opt.MapFrom(src => MemberShipType.Admin));
 
         }
     }

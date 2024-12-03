@@ -4,11 +4,16 @@ using BookManagement.Infrastructure.Repository.Interfaces;
 
 namespace BookManagement.Application.Services.Implements;
 
-public class OtpService(IOtpRepository repository) : IOtpService
+public class OtpService : IOtpService
 {
-    private readonly IOtpRepository _repository = repository;
+    private readonly IOtpRepository _repository;
 
-    public async Task<SignUpResponse> SaveOtpRequest(int userId,string userName, string otp)
+    public OtpService(IOtpRepository repository)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
+
+    public async Task<SignUpResponse> SaveOtpRequest(int userId, string userName, string otp)
     {
         try
         {
@@ -29,6 +34,14 @@ public class OtpService(IOtpRepository repository) : IOtpService
 
     public async Task<bool> ValidateOtpRequest(int userId, string otp)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _repository.ValidateOtpRequest(userId, otp);
+        }
+        catch (Exception e)
+        {
+            throw new ApplicationException($"OTP validation failed: {e.Message}");
+        }
     }
 }
+
