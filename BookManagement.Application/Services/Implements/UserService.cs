@@ -1,5 +1,5 @@
 using AutoMapper;
-using BookManagement.Application.Features.Command;
+using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Services.Interfaces;
 using BookManagement.Domain.Enitiy;
 using BookManagement.Domain.Enum;
@@ -41,4 +41,13 @@ public class UserService(IUserRepository repository,IMapper mapper) : IUserServi
         }
         return loginResult;
     }
+    public async Task<Users?> GetUserById(string username)
+    {
+        return await _repository.GetUserById(username);
+    }
+
+    public async Task<bool> UpdateUser(Users user)
+    {
+        return await _repository.UpdateUser(user);
+}
 }

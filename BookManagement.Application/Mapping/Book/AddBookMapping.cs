@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using BookManagement.Application.Features.Commands;
+using BookManagement.Application.Features.Commands.books;
 using BookManagement.Domain.Enitiy;
 
 namespace BookManagement.Application.Mapping.Book

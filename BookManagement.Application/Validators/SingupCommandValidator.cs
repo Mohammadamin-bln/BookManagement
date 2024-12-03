@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BookManagement.Application.Features.Command;
+using BookManagement.Application.Features.Commands.users;
 using FluentValidation;
 
 namespace BookManagement.Application.Validators

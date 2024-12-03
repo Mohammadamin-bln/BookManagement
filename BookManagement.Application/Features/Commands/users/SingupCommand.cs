@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BookManagement.Application.Responses;
 using MediatR;
 
-namespace BookManagement.Application.Features.Command
+namespace BookManagement.Application.Features.Commands.users
 {
     public class SingupCommand : IRequest<SignUpResponse>
     {

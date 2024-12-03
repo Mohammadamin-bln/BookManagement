@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using System.Text;
-using BookManagement.Application.Features.Commands;
+using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Mapping.SingupMapping;
 using BookManagement.Application.Services.Implements;
 using BookManagement.Application.Services.Interfaces;
@@ -25,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(SingUpMapping));
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SingupCommandValidator>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
 

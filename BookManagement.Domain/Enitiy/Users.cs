@@ -17,5 +17,7 @@ namespace BookManagement.Domain.Enitiy
         public int Age { get; set; }
         public string? Email { get; set; }
         public  Enums.MemberShipType MemberShipType { get; set; }
+
+        public int Wallet { get; set; } = 0;
     }
 }

@@ -7,9 +7,9 @@ using BookManagement.Application.Services.Interfaces;
 using BookManagement.Domain.Enitiy;
 using MediatR;
 
-namespace BookManagement.Application.Features.Commands
+namespace BookManagement.Application.Features.Commands.books
 {
-    public class AddBookCommandHandler(IBookService bookService) : IRequestHandler<AddBookCommand,bool>
+    public class AddBookCommandHandler(IBookService bookService) : IRequestHandler<AddBookCommand, bool>
     {
         private readonly IBookService _bookService = bookService;
 
@@ -17,7 +17,7 @@ namespace BookManagement.Application.Features.Commands
         {
             Books book = await _bookService.AddBook(request);
             return true;
-            
+
         }
 
 

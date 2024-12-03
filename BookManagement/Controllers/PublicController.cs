@@ -1,5 +1,5 @@
-﻿using BookManagement.Application.Features.Command;
-using BookManagement.Application.Features.Commands;
+﻿using BookManagement.Application.Features.Commands;
+using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Features.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

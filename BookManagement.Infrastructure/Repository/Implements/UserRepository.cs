@@ -25,5 +25,17 @@ namespace BookManagement.Infrastructure.Repository.Implements
         {
             return await _context.Users.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
         }
+
+        public async Task<Users?> GetUserById(string username)
+        {
+            return await _context.Users.SingleOrDefaultAsync(x => x.Username==username);
+        }
+
+        public async Task<bool> UpdateUser(Users user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using BookManagement.Domain.Enitiy;
 
 using MediatR;
-using BookManagement.Application.Features.Command;
 using BookManagement.Application.Responses;
 using BookManagement.Application.Services.Interfaces;
 
 
-namespace BookManagement.Application.Features.Commands
+namespace BookManagement.Application.Features.Commands.users
 {
     public class SignUpCommandHandler : IRequestHandler<SingupCommand, SignUpResponse>
     {
