@@ -10,7 +10,9 @@ public interface IUserService
     
     //TODO: Create Dto for login response
     public Task<Users> Login(string username, string password);
-    public Task<Users?> GetUserById(string username);
+    public Task<Users?> GetUserByName(string username);
 
     public Task<bool> UpdateUser(Users user);
+    public Task<bool> UpgradeMembershipAsync(string username, int month);
+
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BookManagement.Domain.Enitiy;
 using BookManagement.Infrastructure.Context;
 using BookManagement.Infrastructure.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookManagement.Infrastructure.Repository.Implements
 {
@@ -22,6 +23,16 @@ namespace BookManagement.Infrastructure.Repository.Implements
             var addedBooks= _context.Books.Add(book);
             await _context.SaveChangesAsync();
             return addedBooks.Entity;
+        }
+        public async Task<List<Books>> GetAllBooks()
+        {
+            var books = await _context.Books.ToListAsync(); // Use ToListAsync for async
+            return books;
+        }
+
+        public async Task<Books?> GetBookById(int id)
+        {
+            return await _context.Books.SingleOrDefaultAsync(a => a.Id == id);
         }
 
     }

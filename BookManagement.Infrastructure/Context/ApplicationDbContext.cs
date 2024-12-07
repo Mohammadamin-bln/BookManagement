@@ -21,5 +21,7 @@ namespace BookManagement.Infrastructure.Context
         public DbSet<StoredOtp> StoredOtps { get; set; }
 
         public DbSet<Books> Books { get; set; }
+
+        public DbSet<Reservation> Reservation { get; set; }
     }
 }

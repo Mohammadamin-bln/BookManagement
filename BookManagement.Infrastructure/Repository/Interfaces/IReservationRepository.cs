@@ -7,11 +7,8 @@ using BookManagement.Domain.Enitiy;
 
 namespace BookManagement.Infrastructure.Repository.Interfaces
 {
-    public interface IBookRepository
+    public interface IReservationRepository
     {
-        public Task<Books> AddBook(Books book);
-        public Task<List<Books>> GetAllBooks();
-
-        public Task<Books?> GetBookById(int id);
+        Task<Reservation?> ReserveBook(int userId, int bookId, int days);
     }
 }

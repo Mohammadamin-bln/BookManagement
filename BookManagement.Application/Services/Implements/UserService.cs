@@ -17,7 +17,7 @@ public class UserService(IUserRepository repository,IMapper mapper) : IUserServi
         try
         {
             var model = _mapper.Map<Users>(request);
-            model.MemberShipType = Enums.MemberShipType.Admin;
+            model.MemberShipType = Enums.MemberShipType.Normal;
             var added_user = await _repository.AddUser(model);
             return added_user;
         }
@@ -41,13 +41,45 @@ public class UserService(IUserRepository repository,IMapper mapper) : IUserServi
         }
         return loginResult;
     }
-    public async Task<Users?> GetUserById(string username)
+    public async Task<Users?> GetUserByName(string username)
     {
-        return await _repository.GetUserById(username);
+        return await _repository.GetUserByName(username);
     }
 
     public async Task<bool> UpdateUser(Users user)
     {
         return await _repository.UpdateUser(user);
-}
+    }
+    public async Task<bool> UpgradeMembershipAsync(string username, int month)
+    {
+        var user = await GetUserByName(username);
+        
+        if (user == null)
+            throw new Exception("User not found");
+
+        if (month == 1)
+        {
+            if (user.Wallet >= 50)
+            {
+                user.Wallet -= 50;
+                user.MemberShipType = Enums.MemberShipType.Vip;
+                return await _repository.UpdateUser(user);
+            }
+            return false; 
+        }
+
+        if (month == 2)
+        {
+            if (user.Wallet >= 100)
+            {
+                user.Wallet -= 100;
+                user.MemberShipType = Enums.MemberShipType.Vip;
+                return await _repository.UpdateUser(user);
+            }
+            return false; 
+        }
+
+        throw new ArgumentException("Invalid membership duration. Only 1 or 2 months are allowed.");
+    }
+
 }

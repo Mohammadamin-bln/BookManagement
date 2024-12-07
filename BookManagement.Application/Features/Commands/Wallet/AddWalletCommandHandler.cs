@@ -10,11 +10,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace BookManagement.Application.Features.Commands.Wallet
 {
-    public class AddWalletCommandHandler(IUserService userService, IHttpContextAccessor httpContextAccessor) : IRequestHandler<AddWalletCommand,bool>
+    public class AddWalletCommandHandler : IRequestHandler<AddWalletCommand,bool>
     {
-        private readonly IUserService _userService=userService;
-        private readonly IHttpContextAccessor _contextAccessor = httpContextAccessor;
+        private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
+        public AddWalletCommandHandler(IUserService userService, IHttpContextAccessor contextAccessor)
+        {
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+        }
         public  async Task<bool> Handle(AddWalletCommand request,CancellationToken cancellationToken)
         {
             var username= _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -22,12 +27,12 @@ namespace BookManagement.Application.Features.Commands.Wallet
             if (string.IsNullOrEmpty(username))
                 throw new UnauthorizedAccessException("not authorized");
 
-            var user = await _userService.GetUserById(username);
+            var user = await _userService.GetUserByName(username);
             if (user == null)
                 throw new Exception("User not found");
             user.Wallet = request.Amount;
-            _userService.UpdateUser(user);
-            return true;
+            var updatedUser= await _userService.UpdateUser(user);
+            return updatedUser;
 
 
 

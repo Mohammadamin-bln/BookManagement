@@ -12,5 +12,10 @@ namespace BookManagement.Application.Services.Interfaces
     public interface IBookService
     {
         public Task<Books> AddBook(AddBookCommand request);
-    }
+        public Task<List<Books>> GetAllBooks();
+
+        public Task<bool> SaveResevation(string username, int bookId, int days);
+
+        
+    } 
 }

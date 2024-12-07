@@ -26,9 +26,9 @@ namespace BookManagement.Infrastructure.Repository.Implements
             return await _context.Users.SingleOrDefaultAsync(x => x.Username == username && x.Password == password);
         }
 
-        public async Task<Users?> GetUserById(string username)
+        public async Task<Users?> GetUserByName(string username)
         {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Username==username);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Username==username);
         }
 
         public async Task<bool> UpdateUser(Users user)

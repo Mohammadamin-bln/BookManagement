@@ -17,5 +17,7 @@ namespace BookManagement.Domain.Enitiy
 
         public int Price { get; set; }
 
+        public bool IsReserved { get; set; } = false;
+
     }
 }

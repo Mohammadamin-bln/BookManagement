@@ -17,7 +17,7 @@ namespace BookManagement.Presentation.Controllers
             _mediator = mediator;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost("AddBook")]
         public async Task<IActionResult> AddBook(AddBookCommand command)
         {
