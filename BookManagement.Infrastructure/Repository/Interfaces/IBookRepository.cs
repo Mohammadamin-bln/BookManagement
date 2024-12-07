@@ -16,6 +16,6 @@ namespace BookManagement.Infrastructure.Repository.Interfaces
 
         public Task<Books?> GetBookByName(string bookName);
 
-        public Task<List<Books>> FilterByPrice(int minPrice, int maxPrice);
+        public Task<List<Books>> FilterBookByPrice(int minPrice, int maxPrice);
     }
 }

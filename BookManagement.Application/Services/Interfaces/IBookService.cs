@@ -17,6 +17,7 @@ namespace BookManagement.Application.Services.Interfaces
         public Task<bool> SaveResevation(string username, int bookId, int days);
 
         public Task<Books> SearchBook(string bookName); 
+        public Task<List<Books>> FilterBookByPrice(int minPrice, int maxPrice);
 
         
     } 

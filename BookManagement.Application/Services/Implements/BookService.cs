@@ -86,10 +86,10 @@ namespace BookManagement.Application.Services.Implements
         public async Task<Books?> SearchBook(string bookName)
         {
             return await _bookRepository.GetBookByName(bookName);
-
-
-
-            
+        }
+        public async Task<List<Books>> FilterBookByPrice(int minPrice, int maxPrice)
+        {
+            return await _bookRepository.FilterBookByPrice(minPrice, maxPrice);
         }
 
 

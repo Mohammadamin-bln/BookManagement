@@ -1,6 +1,7 @@
 ﻿using BookManagement.Application.Features.Commands.books;
 using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Features.Commands.Wallet;
+using BookManagement.Application.Features.Queries.FilterBook;
 using BookManagement.Application.Features.Queries.SearchBook;
 using BookManagement.Application.Services.Interfaces;
 using MediatR;
@@ -66,13 +67,26 @@ namespace BookManagement.Presentation.Controllers
             return Ok("book reserved successfully");
         }
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> SearchBook(SearchBookQuery request)
+        [HttpGet("Search/Book")]
+        public async Task<IActionResult> SearchBook([FromQuery] SearchBookQuery request)
         {
             var result= await _mediator.Send(request);
             if (result == null)
             {
                 return BadRequest("book not found");
+            }
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("filter/by/price")]
+        public async Task<IActionResult> FilterBooksByPrice([FromQuery] FilterBookByPriceQuery request)
+        {
+            var result = await _mediator.Send(request);
+            if(result == null)
+            {
+                BadRequest("didnt found any books");
+
             }
             return Ok(result);
         }
