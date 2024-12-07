@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookManagement.Application.Features.Queries
+namespace BookManagement.Application.Features.Queries.Signin
 {
     public class SingInQuery : IRequest<string>
     {

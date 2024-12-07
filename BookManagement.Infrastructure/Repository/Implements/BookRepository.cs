@@ -30,9 +30,15 @@ namespace BookManagement.Infrastructure.Repository.Implements
             return books;
         }
 
-        public async Task<Books?> GetBookById(int id)
+        public  Task<Books?> GetBookById(int id)
         {
-            return await _context.Books.SingleOrDefaultAsync(a => a.Id == id);
+            return  _context.Books.FirstOrDefaultAsync(a => a.Id == id);
+
+            
+        }
+        public Task<Books?> GetBookByName(string name)
+        {
+            return _context.Books.FirstOrDefaultAsync(b=> b.Name == name);
         }
 
     }

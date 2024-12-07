@@ -1,6 +1,7 @@
 ﻿using BookManagement.Application.Features.Commands.books;
 using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Features.Commands.Wallet;
+using BookManagement.Application.Features.Queries.SearchBook;
 using BookManagement.Application.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -63,6 +64,17 @@ namespace BookManagement.Presentation.Controllers
                 return BadRequest("failed to reserve book");
             }
             return Ok("book reserved successfully");
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SearchBook(SearchBookQuery request)
+        {
+            var result= await _mediator.Send(request);
+            if (result == null)
+            {
+                return BadRequest("book not found");
+            }
+            return Ok(result);
         }
             
 

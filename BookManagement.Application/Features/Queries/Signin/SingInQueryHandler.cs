@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using BookManagement.Application.Services.Interfaces;
 
-namespace BookManagement.Application.Features.Queries
+namespace BookManagement.Application.Features.Queries.Signin
 {
     public class SignInQueryHandler(IConfiguration configuration, IUserService userService, IOtpService otpService)
         : IRequestHandler<SingInQuery, string>
@@ -18,7 +18,7 @@ namespace BookManagement.Application.Features.Queries
         public async Task<string> Handle(SingInQuery request, CancellationToken cancellationToken)
         {
             // Step 1: Validate user credentials (username and password)
-            var user = await _userService.Login(request.Username,request.Password);
+            var user = await _userService.Login(request.Username, request.Password);
 
             if (user == null)
             {
@@ -26,7 +26,7 @@ namespace BookManagement.Application.Features.Queries
             }
 
             // Step 2: Validate OTP
-            var isOtpValid = await _otpService.ValidateOtpRequest(user.Id,request.Otp);
+            var isOtpValid = await _otpService.ValidateOtpRequest(user.Id, request.Otp);
 
             if (!isOtpValid)
             {
