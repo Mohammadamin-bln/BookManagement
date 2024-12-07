@@ -66,7 +66,7 @@ namespace BookManagement.Presentation.Controllers
             return Ok("book reserved successfully");
         }
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> SearchBook(SearchBookQuery request)
         {
             var result= await _mediator.Send(request);

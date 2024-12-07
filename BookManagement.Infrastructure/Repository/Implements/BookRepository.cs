@@ -26,7 +26,7 @@ namespace BookManagement.Infrastructure.Repository.Implements
         }
         public async Task<List<Books>> GetAllBooks()
         {
-            var books = await _context.Books.ToListAsync(); // Use ToListAsync for async
+            var books = await _context.Books.ToListAsync(); 
             return books;
         }
 
@@ -40,6 +40,13 @@ namespace BookManagement.Infrastructure.Repository.Implements
         {
             return _context.Books.FirstOrDefaultAsync(b=> b.Name == name);
         }
+
+        public Task<List<Books>> FilterByPrice(int minPrice,int maxPrice)
+        {
+            return  _context.Books
+                .Where(book => book.Price >= minPrice && book.Price <= maxPrice)
+                .ToListAsync();
+        } 
 
     }
 }
