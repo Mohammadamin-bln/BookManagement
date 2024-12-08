@@ -101,6 +101,11 @@ namespace BookManagement.Application.Services.Implements
             return _bookRepository.FilterBookByPrice(minPrice, maxPrice);
         }
 
+        public Task<List<Books>> SortBookByPrice()
+        {
+            return _bookRepository.SortBookByPrice();
+        }
+
 
 
     }

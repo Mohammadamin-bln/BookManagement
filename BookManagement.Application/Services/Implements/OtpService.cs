@@ -23,7 +23,7 @@ public class OtpService : IOtpService
                 UserId = userId,
                 Username = userName,
                 Otp = otp,
-                ExpiryTime = DateTime.UtcNow.AddMinutes(2) // Expiration time of OTP
+                ExpiryTime = DateTime.UtcNow.AddMinutes(2) 
             };
         }
         catch (Exception e)

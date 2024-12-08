@@ -101,6 +101,18 @@ namespace BookManagement.Presentation.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpGet("sort/by/price")]
+        public async Task<IActionResult> SortBookByPrice([FromQuery] SortBookByPriceQuery request)
+        {
+            var result = await _mediator.Send(request);
+             if (result == null)
+            {
+                return BadRequest("no books found");
+            }
+            return Ok(result);
+        }
+
 
 
     }

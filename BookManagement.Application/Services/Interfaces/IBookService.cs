@@ -21,6 +21,8 @@ namespace BookManagement.Application.Services.Interfaces
 
         public Task<List<Books>> SortBookByName();
 
+        public Task<List<Books>> SortBookByPrice();
+
         
     } 
 }
