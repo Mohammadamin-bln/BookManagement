@@ -68,8 +68,8 @@ namespace BookManagement.Presentation.Controllers
             return Ok("book reserved successfully");
         }
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> SearchBook(SearchBookQuery request)
+        [HttpGet("Search/book")]
+        public async Task<IActionResult> SearchBook([FromQuery]SearchBookQuery request)
         {
             var result= await _mediator.Send(request);
             if (result == null)
@@ -78,7 +78,29 @@ namespace BookManagement.Presentation.Controllers
             }
             return Ok(result);
         }
-            
+        [Authorize]
+        [HttpGet("filter/by/price")]
+        public async Task <IActionResult> SortBookByPrice([FromQuery]FilterBookByPriceQuery request)
+        {
+            var result = await _mediator.Send(request);
+            if (result == null)
+            {
+                return BadRequest("book not found");
+            }
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpGet("sort/by/name")]
+        public async Task<IActionResult> SortBookByName([FromQuery] SortBookByNameQuery request)
+        {
+            var result = await _mediator.Send(request);
+            if (result == null)
+            {
+                return BadRequest("book not found");
+            }
+            return Ok(result);
+        }
+
 
 
     }

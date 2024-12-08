@@ -63,7 +63,7 @@ public class UserService(IUserRepository repository,IMapper mapper) : IUserServi
             {
                 user.Wallet -= 50;
                 user.MemberShipType = Enums.MemberShipType.Vip;
-                //user.MemberShipExpire = DateTime.UtcNow.AddDays(30);
+                user.MemberShipExpire = DateTime.UtcNow.AddDays(30);
                 return await _repository.UpdateUser(user);
             }
             return false; 
@@ -75,7 +75,7 @@ public class UserService(IUserRepository repository,IMapper mapper) : IUserServi
             {
                 user.Wallet -= 100;
                 user.MemberShipType = Enums.MemberShipType.Vip;
-                //user.MemberShipExpire = DateTime.UtcNow.AddDays(60);
+                user.MemberShipExpire = DateTime.UtcNow.AddDays(60);
                 return await _repository.UpdateUser(user);
             }
             return false; 

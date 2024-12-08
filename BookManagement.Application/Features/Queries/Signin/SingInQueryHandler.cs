@@ -32,6 +32,10 @@ namespace BookManagement.Application.Features.Queries.Signin
             {
                 throw new UnauthorizedAccessException("Invalid OTP or OTP has expired.");
             }
+            if (user.MemberShipExpire<= DateTime.UtcNow)
+            {
+                user.MemberShipType = Domain.Enum.Enums.MemberShipType.Normal;
+            }
 
             // Step 3: Generate JWT token
             var jwtToken = GenerateJwtToken(user.Username, user);
