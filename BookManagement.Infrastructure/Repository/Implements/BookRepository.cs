@@ -42,12 +42,12 @@ namespace BookManagement.Infrastructure.Repository.Implements
             return _context.Books.FirstOrDefaultAsync(b=> b.Name == name);
         }
 
-        public Task<List<Books>> FilterByPrice(int minPrice,int maxPrice)
+        public Task<List<Books>> FilterBookByPrice(int minPrice,int maxPrice)
         {
             return  _context.Books
                 .Where(book => book.Price >= minPrice && book.Price <= maxPrice)
                 .ToListAsync();
-        }
+        } 
 
         public Task<List<Books>> SortBookByName()
         {
