@@ -18,6 +18,8 @@ namespace BookManagement.Domain.Enitiy
         public string? Email { get; set; }
         public  Enums.MemberShipType MemberShipType { get; set; }
 
+        public DateTime MemberShipExpire { get; set; }
+
         public int Wallet { get; set; } = 0;
     }
 }

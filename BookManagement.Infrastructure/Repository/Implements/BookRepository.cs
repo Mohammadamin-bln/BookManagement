@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BookManagement.Domain.Enitiy;
 using BookManagement.Infrastructure.Context;
 using BookManagement.Infrastructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookManagement.Infrastructure.Repository.Implements
@@ -46,7 +47,11 @@ namespace BookManagement.Infrastructure.Repository.Implements
             return  _context.Books
                 .Where(book => book.Price >= minPrice && book.Price <= maxPrice)
                 .ToListAsync();
-        } 
+        }
 
+        public Task<List<Books>> SortBookByName()
+        {
+            return _context.Books.OrderBy(book => book.Name).ToListAsync();
+        }
     }
 }

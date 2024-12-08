@@ -87,9 +87,11 @@ namespace BookManagement.Application.Services.Implements
         {
             return await _bookRepository.GetBookByName(bookName);
 
+        }
+        public async Task<List<Books>> SortBookByName()
+        {
+            return await _bookRepository.SortBookByName();
 
-
-            
         }
 
 

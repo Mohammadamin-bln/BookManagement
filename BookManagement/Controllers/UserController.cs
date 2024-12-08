@@ -2,6 +2,7 @@
 using BookManagement.Application.Features.Commands.users;
 using BookManagement.Application.Features.Commands.Wallet;
 using BookManagement.Application.Features.Queries.SearchBook;
+using BookManagement.Application.Features.Queries.SortBooks;
 using BookManagement.Application.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -67,7 +68,7 @@ namespace BookManagement.Presentation.Controllers
         }
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> SearchBook(SearchBookQuery request)
+        public async Task<IActionResult> SearchBook([FromQuery]SearchBookQuery request)
         {
             var result= await _mediator.Send(request);
             if (result == null)
@@ -76,7 +77,17 @@ namespace BookManagement.Presentation.Controllers
             }
             return Ok(result);
         }
-            
+
+        [Authorize]
+        [HttpGet("Book/Sort/Name")]
+        public async Task<IActionResult> SortBookByName([FromQuery]SortBookByNameQuery request)
+        {
+            var result= await _mediator.Send(request);
+            if (result == null)
+                return BadRequest("there are no books");
+            return Ok(result);
+
+        }
 
 
     }

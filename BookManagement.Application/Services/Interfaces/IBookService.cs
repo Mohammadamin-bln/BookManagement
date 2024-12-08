@@ -18,6 +18,8 @@ namespace BookManagement.Application.Services.Interfaces
 
         public Task<Books> SearchBook(string bookName); 
 
+        public Task<List<Books>> SortBookByName();
+
         
     } 
 }
